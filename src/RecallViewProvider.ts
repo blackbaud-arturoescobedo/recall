@@ -29,14 +29,54 @@ export class RecallViewProvider implements vscode.WebviewViewProvider {
                     type: 'response',
                     message: response
                 });
+            } else if (data.type === 'clearHistory') {
+                this.conversationHistory = [];
+                webviewView.webview.postMessage({
+                    type: 'cleared'
+                });
             }
         });
     }
 
-    private async _getResponse(message: string): Promise<string> {
-        // Placeholder - we'll replace this with Claude API call in Phase 3
-        return `You said: ${message} (Claude integration coming in Phase 3)`;
+private conversationHistory: Array<{role: string, content: string}> = [];
+
+private async _getResponse(message: string): Promise<string> {
+    try {
+        const response = await fetch('http://localhost:8000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: message,
+                conversation_history: this.conversationHistory,
+                workspace_path: vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || ""
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Backend error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Store conversation history for context
+        this.conversationHistory.push(
+            { role: "user", content: message },
+            { role: "assistant", content: data.response }
+        );
+
+        // Keep history manageable - last 10 turns
+        if (this.conversationHistory.length > 20) {
+            this.conversationHistory = this.conversationHistory.slice(-20);
+        }
+
+        return data.response;
+
+    } catch (error) {
+        return `Error connecting to Recall backend. Make sure the Python server is running on port 8000. Error: ${error}`;
     }
+}
 
     private _getHtmlForWebview(): string {
         return `<!DOCTYPE html>
@@ -90,6 +130,11 @@ export class RecallViewProvider implements vscode.WebviewViewProvider {
                     flex-direction: column;
                     gap: 6px;
                 }
+                #button-row {
+                    display: flex;
+                    gap: 6px;
+                    justify-content: flex-end;
+                }
                 #message-input {
                     width: 100%;
                     min-height: 60px;
@@ -116,6 +161,20 @@ export class RecallViewProvider implements vscode.WebviewViewProvider {
                 #send-button:hover {
                     background: var(--vscode-button-hoverBackground);
                 }
+                #clear-button {
+                    padding: 6px 12px;
+                    background: transparent;
+                    color: var(--vscode-foreground);
+                    border: 1px solid var(--vscode-input-border);
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    align-self: flex-end;
+                    opacity: 0.7;
+                }
+                #clear-button:hover {
+                    opacity: 1;
+                }
                 #status {
                     font-size: 11px;
                     opacity: 0.6;
@@ -130,6 +189,7 @@ export class RecallViewProvider implements vscode.WebviewViewProvider {
             <div id="input-container">
                 <textarea id="message-input" placeholder="Ask Recall anything about your project..."></textarea>
                 <button id="send-button">Send</button>
+                <button id="clear-button">Clear</button>
             </div>
             <script>
                 const vscode = acquireVsCodeApi();
@@ -169,12 +229,21 @@ export class RecallViewProvider implements vscode.WebviewViewProvider {
                     }
                 });
 
+                const clearButton = document.getElementById('clear-button');
+                clearButton.addEventListener('click', () => {
+                    chatContainer.innerHTML = '';
+                    vscode.postMessage({ type: 'clearHistory' });
+                });
+
                 window.addEventListener('message', (event) => {
                     const message = event.data;
                     if (message.type === 'response') {
                         addMessage(message.message, false);
                         status.textContent = '';
                         sendButton.disabled = false;
+                    } else if (message.type === 'cleared') {
+                        status.textContent = 'Conversation cleared';
+                        setTimeout(() => status.textContent = '', 2000);
                     }
                 });
             </script>
