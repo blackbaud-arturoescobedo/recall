@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recall</title>
+    <style>
+        body {
+            font-family: var(--vscode-font-family);
+            padding: 10px;
+            color: var(--vscode-foreground);
+            background: var(--vscode-sideBar-background);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        .message {
+            margin: 8px 0;
+            padding: 8px 10px;
+            border-radius: 6px;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+        .user-message {
+            background: var(--vscode-input-background);
+            border-left: 3px solid var(--vscode-focusBorder);
+        }
+        .assistant-message {
+            background: var(--vscode-editor-inactiveSelectionBackground);
+            border-left: 3px solid var(--vscode-activityBarBadge-background);
+        }
+        .label {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        #input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        #button-row {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+        #message-input {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px;
+            background: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            border: 1px solid var(--vscode-input-border);
+            border-radius: 4px;
+            font-family: var(--vscode-font-family);
+            font-size: 13px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        #send-button {
+            padding: 6px 12px;
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        #send-button:hover {
+            background: var(--vscode-button-hoverBackground);
+        }
+        #clear-button {
+            padding: 6px 12px;
+            background: transparent;
+            color: var(--vscode-foreground);
+            border: 1px solid var(--vscode-input-border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+        #clear-button:hover {
+            opacity: 1;
+        }
+        #status {
+            font-size: 11px;
+            opacity: 0.6;
+            font-style: italic;
+            min-height: 16px;
+        }
+        .message-content h1,
+        .message-content h2,
+        .message-content h3 {
+            margin: 8px 0 4px 0;
+            color: var(--vscode-foreground);
+        }
+        .message-content h2 {
+            font-size: 14px;
+            border-bottom: 1px solid var(--vscode-input-border);
+            padding-bottom: 4px;
+        }
+        .message-content h3 {
+            font-size: 13px;
+        }
+        .message-content code {
+            background: var(--vscode-textCodeBlock-background);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: var(--vscode-editor-font-family);
+            font-size: 12px;
+        }
+        .message-content pre {
+            background: var(--vscode-textCodeBlock-background);
+            padding: 8px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 6px 0;
+        }
+        .message-content pre code {
+            background: none;
+            padding: 0;
+        }
+        .message-content ul {
+            margin: 4px 0;
+            padding-left: 20px;
+        }
+        .message-content li {
+            margin: 2px 0;
+        }
+        .message-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        .message-content td,
+        .message-content th {
+            border: 1px solid var(--vscode-input-border);
+            padding: 4px 8px;
+            text-align: left;
+        }
+        .message-content hr {
+            border: none;
+            border-top: 1px solid var(--vscode-input-border);
+            margin: 8px 0;
+        }
+        .message-content blockquote {
+            border-left: 3px solid var(--vscode-focusBorder);
+            margin: 4px 0;
+            padding-left: 8px;
+            opacity: 0.8;
+        }
+        .message-content strong {
+            font-weight: 600;
+        }
+        .message-content p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container"></div>
+    <div id="status"></div>
+    <div id="input-container">
+        <textarea id="message-input" placeholder="Ask Recall anything... or use #remember #note #status #memories #git #forget"></textarea>
+        <div id="button-row">
+            <button id="clear-button">Clear</button>
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        const vscode = acquireVsCodeApi();
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const clearButton = document.getElementById('clear-button');
+        const status = document.getElementById('status');
+
+        function renderMarkdown(text) {
+            let escaped = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // Code blocks
+            escaped = escaped.replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            // Inline code
+            escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+            // Headers
+            escaped = escaped.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+            escaped = escaped.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            escaped = escaped.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+            // Bold
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Italic
+            escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // Horizontal rule
+            escaped = escaped.replace(/^---$/gim, '<hr>');
+            // Blockquote
+            escaped = escaped.replace(/^&gt; (.*$)/gim, '<blockquote>$1</blockquote>');
+            // Bullet points
+            escaped = escaped.replace(/^[*-] (.*$)/gim, '<li>$1</li>');
+            // Numbered lists
+            escaped = escaped.replace(/^\d+\. (.*$)/gim, '<li>$1</li>');
+            // Wrap list items
+            escaped = escaped.replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>');
+            // Tables
+            escaped = escaped.replace(/^\|(.*)\|$/gim, function(match) {
+                const cells = match.slice(1, -1).split('|');
+                const isSeparator = cells.every(c => c.trim().match(/^[-:]+$/));
+                if (isSeparator) return '';
+                return '<tr>' + cells.map(c => '<td>' + c.trim() + '</td>').join('') + '</tr>';
+            });
+            escaped = escaped.replace(/(<tr>.*<\/tr>\n?)+/gs, '<table>$&</table>');
+            // Paragraphs
+            escaped = escaped.replace(/\n\n/g, '</p><p>');
+            escaped = escaped.replace(/\n/g, '<br>');
+
+            return escaped;
+        }
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = 'message ' + (isUser ? 'user-message' : 'assistant-message');
+            
+            const label = document.createElement('div');
+            label.className = 'label';
+            label.textContent = isUser ? 'You' : 'Recall';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            if (isUser) {
+                content.textContent = text;
+            } else {
+                content.innerHTML = renderMarkdown(text);
+            }
+            
+            div.appendChild(label);
+            div.appendChild(content);
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            addMessage(message, true);
+            messageInput.value = '';
+            status.textContent = 'Recall is thinking...';
+            sendButton.disabled = true;
+            vscode.postMessage({ type: 'sendMessage', message });
+        });
+
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            chatContainer.innerHTML = '';
+            vscode.postMessage({ type: 'clearHistory' });
+        });
+
+        window.addEventListener('message', (event) => {
+            const message = event.data;
+            if (message.type === 'response') {
+                addMessage(message.message, false);
+                status.textContent = '';
+                sendButton.disabled = false;
+            } else if (message.type === 'cleared') {
+                status.textContent = 'Conversation cleared';
+                setTimeout(() => status.textContent = '', 2000);
+            }
+        });
+    </script>
+</body>
+</html>
