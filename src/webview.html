@@ -276,7 +276,39 @@
         window.addEventListener('message', (event) => {
             const message = event.data;
             if (message.type === 'response') {
+                // Non-streaming fallback (errors)
                 addMessage(message.message, false);
+                status.textContent = '';
+                sendButton.disabled = false;
+            } else if (message.type === 'streamStart') {
+                // Create a new assistant message div to stream into
+                const div = document.createElement('div');
+                div.className = 'message assistant-message';
+                div.id = 'streaming-message';
+                const label = document.createElement('div');
+                label.className = 'label';
+                label.textContent = 'Recall';
+                const content = document.createElement('div');
+                content.className = 'message-content';
+                content.id = 'streaming-content';
+                div.appendChild(label);
+                div.appendChild(content);
+                chatContainer.appendChild(div);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                window._streamingRaw = '';
+            } else if (message.type === 'streamToken') {
+                window._streamingRaw = (window._streamingRaw || '') + message.token;
+                const content = document.getElementById('streaming-content');
+                if (content) {
+                    content.innerHTML = renderMarkdown(window._streamingRaw);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            } else if (message.type === 'streamEnd') {
+                const div = document.getElementById('streaming-message');
+                if (div) div.removeAttribute('id');
+                const content = document.getElementById('streaming-content');
+                if (content) content.removeAttribute('id');
+                window._streamingRaw = '';
                 status.textContent = '';
                 sendButton.disabled = false;
             } else if (message.type === 'cleared') {

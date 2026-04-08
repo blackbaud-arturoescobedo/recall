@@ -3,8 +3,9 @@ import os
 import subprocess
 from pathlib import Path
 
-# Initialize ChromaDB with local persistence
-chroma_client = chromadb.PersistentClient(path="../.chromadb")
+# Initialize ChromaDB with local persistence — absolute path relative to this file
+_BACKEND_DIR = Path(__file__).parent
+chroma_client = chromadb.PersistentClient(path=str(_BACKEND_DIR.parent / ".chromadb"))
 
 # Get or create our collection
 collection = chroma_client.get_or_create_collection(

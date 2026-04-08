@@ -1,8 +1,9 @@
 {
   "name": "recall",
-  "displayName": "recall",
+  "displayName": "Recall",
   "description": "Persistent memory layer for AI dev workflow",
   "version": "0.0.1",
+  "publisher": "arturo-escobedo",
   "engines": {
     "vscode": "^1.110.0"
   },
@@ -26,10 +27,12 @@
               "name": "Recall Memory"
           }]
       },
-      "commands": [{
-          "command": "recall.helloWorld",
-          "title": "Hello World"
-      }]
+      "commands": [
+          {
+              "command": "recall.indexWorkspace",
+              "title": "Recall: Index Workspace"
+          }
+      ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

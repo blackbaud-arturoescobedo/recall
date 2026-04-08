@@ -11,3 +11,6 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+.env
+.chromadb/**
+backend/__pycache__/**

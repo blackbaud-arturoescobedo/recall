@@ -1,0 +1,10 @@
+{
+    "servers": {
+        "recall": {
+            "type": "stdio",
+            "command": "python",
+            "args": ["${workspaceFolder}/backend/mcp_server.py"],
+            "env": {}
+        }
+    }
+}

@@ -1,12 +1,20 @@
-# recall README
+# Recall
 
-This is the README for your extension "recall". After writing up a brief description, we recommend including the following sections.
+Persistent memory for your AI dev workflow. Recall gives VS Code a long-term memory that survives across sessions, projects, and AI tools.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Persistent memory** — save decisions, notes, and status that survive closing VS Code
+- **Codebase awareness** — auto-indexes your workspace on startup so Recall knows your code
+- **Streaming chat** — conversational AI interface powered by Claude
+- **MCP integration** — Copilot can read and write to Recall's memory via MCP tools
+- **Commands** — `#remember`, `#note`, `#status`, `#memories`, `#forget`, `#done`
 
-For example if there is an image subfolder under your extension project workspace:
+## Requirements
+
+- Python 3.8+
+- An Anthropic API key in a `.env` file: `ANTHROPIC_API_KEY=sk-...`
+- Run `pip install -r backend/requirements.txt` once before first use
 
 \!\[feature X\]\(images/feature-x.png\)
 

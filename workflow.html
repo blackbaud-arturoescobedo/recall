@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Recall — Workflow Diagram</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0d1117; display:flex; align-items:center; justify-content:center; padding:32px; min-height:100vh; }
+</style>
+</head>
+<body>
+<svg width="1200" height="980" viewBox="0 0 1200 980" xmlns="http://www.w3.org/2000/svg"
+  font-family="'Segoe UI',system-ui,sans-serif">
+
+  <!-- ── bg ─────────────────────────────── -->
+  <rect width="1200" height="980" fill="#0d1117" rx="14"/>
+
+  <!-- ── markers ─────────────────────────── -->
+  <defs>
+    <marker id="mb"  viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#58a6ff"/></marker>
+    <marker id="mg"  viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#3fb950"/></marker>
+    <marker id="mo"  viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#f0883e"/></marker>
+    <marker id="mp"  viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#a371f7"/></marker>
+    <marker id="mgr" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#6e7681"/></marker>
+    <marker id="mr"  viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="5" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#ff7b72"/></marker>
+    <linearGradient id="gJ1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f6feb" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#1f6feb" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="gJ2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a371f7" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#a371f7" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="gSB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0883e" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f0883e" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ════════════════════════════════════
+       TITLE
+  ════════════════════════════════════ -->
+  <text x="600" y="36" text-anchor="middle" fill="#e6edf3" font-size="19" font-weight="700" letter-spacing="0.4">Recall — Developer Workflow</text>
+  <text x="600" y="55" text-anchor="middle" fill="#484f58" font-size="11">Start of Day · End of Day · Sidebar Chat</text>
+
+  <!-- ════════════════════════════════════
+       SECTION BACKGROUNDS
+  ════════════════════════════════════ -->
+  <!-- Sidebar bg -->
+  <rect x="20" y="72" width="168" height="858" rx="10" fill="url(#gSB)" stroke="#f0883e" stroke-width="1" stroke-opacity="0.35"/>
+  <!-- Journey 1 bg -->
+  <rect x="206" y="72" width="300" height="858" rx="10" fill="url(#gJ1)" stroke="#1f6feb" stroke-width="1" stroke-opacity="0.35"/>
+  <!-- Journey 2 bg -->
+  <rect x="694" y="72" width="300" height="858" rx="10" fill="url(#gJ2)" stroke="#a371f7" stroke-width="1" stroke-opacity="0.35"/>
+
+  <!-- section labels -->
+  <text x="104" y="92" text-anchor="middle" fill="#f0883e" font-size="9" font-weight="700" letter-spacing="1.5">SIDEBAR CHAT</text>
+  <text x="356" y="92" text-anchor="middle" fill="#58a6ff" font-size="9" font-weight="700" letter-spacing="1.5">JOURNEY 1 — START OF DAY</text>
+  <text x="844" y="92" text-anchor="middle" fill="#c9b1ff" font-size="9" font-weight="700" letter-spacing="1.5">JOURNEY 2 — END OF DAY</text>
+
+  <!-- ════════════════════════════════════
+       CENTER CHROMADB NODE
+  ════════════════════════════════════ -->
+  <!-- outer glow ring -->
+  <ellipse cx="600" cy="485" rx="90" ry="90" fill="none" stroke="#3fb950" stroke-width="1" stroke-opacity="0.2"/>
+  <ellipse cx="600" cy="485" rx="79" ry="79" fill="#0d2319" stroke="#3fb950" stroke-width="2"/>
+  <text x="600" y="473" text-anchor="middle" fill="#56d364" font-size="13" font-weight="700">ChromaDB</text>
+  <text x="600" y="488" text-anchor="middle" fill="#56d364" font-size="10">.chromadb</text>
+  <text x="600" y="501" text-anchor="middle" fill="#6e7681" font-size="9">local SQLite</text>
+  <!-- badge below -->
+  <rect x="506" y="570" width="188" height="32" rx="8" fill="#0d2319" stroke="#3fb950" stroke-width="1.2"/>
+  <text x="600" y="582" text-anchor="middle" fill="#3fb950" font-size="9" font-weight="600">Permanent local memory</text>
+  <text x="600" y="595" text-anchor="middle" fill="#484f58" font-size="8.5">never expires · never leaves your machine</text>
+
+
+  <!-- ════════════════════════════════════
+       J1 BOXES  (cx=356)
+  ════════════════════════════════════ -->
+  <!-- J1-1: Developer opens VS Code -->
+  <rect x="218" y="114" width="276" height="46" rx="7" fill="#161b22" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="356" y="133" text-anchor="middle" fill="#e6edf3" font-size="11" font-weight="600">Developer opens VS Code</text>
+  <text x="356" y="148" text-anchor="middle" fill="#6e7681" font-size="10">morning · new session</text>
+
+  <!-- J1-2: /Recall-briefing -->
+  <rect x="218" y="196" width="276" height="46" rx="7" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="356" y="214" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Types /Recall-briefing</text>
+  <text x="356" y="229" text-anchor="middle" fill="#6e7681" font-size="10">in Copilot Chat</text>
+
+  <!-- J1-3: MCP Protocol Layer -->
+  <rect x="218" y="278" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="356" y="296" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">VS Code MCP Protocol Layer</text>
+  <text x="356" y="311" text-anchor="middle" fill="#6e7681" font-size="10">stdio transport · routes request</text>
+
+  <!-- J1-4: Recall MCP Server -->
+  <rect x="218" y="360" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="356" y="378" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Recall MCP Server</text>
+  <text x="356" y="393" text-anchor="middle" fill="#6e7681" font-size="10">list_memories · search tools</text>
+
+  <!-- J1-5: ChromaDB returns -->
+  <rect x="218" y="442" width="276" height="46" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="356" y="460" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">Stored memories returned</text>
+  <text x="356" y="475" text-anchor="middle" fill="#6e7681" font-size="10">decisions · open questions · status</text>
+
+  <!-- J1-6: Structured briefing -->
+  <rect x="218" y="524" width="276" height="46" rx="7" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="356" y="542" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Structured briefing → Copilot Chat</text>
+  <text x="356" y="557" text-anchor="middle" fill="#6e7681" font-size="10">formatted context summary</text>
+
+  <!-- J1-7: Start working (terminal) -->
+  <rect x="218" y="610" width="276" height="54" rx="7" fill="#0d2d5e" stroke="#1f6feb" stroke-width="2"/>
+  <text x="356" y="630" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Developer starts working</text>
+  <text x="356" y="645" text-anchor="middle" fill="#56d364" font-size="10">full context · no re-explaining</text>
+  <rect x="282" y="650" width="148" height="14" rx="6" fill="#1f6feb" fill-opacity="0.25"/>
+  <text x="356" y="660" text-anchor="middle" fill="#79c0ff" font-size="8.5" font-weight="600">✓  zero context-loss</text>
+
+
+  <!-- ════════════════════════════════════
+       J2 BOXES  (cx=844)
+  ════════════════════════════════════ -->
+  <!-- J2-1: Developer finishes session -->
+  <rect x="706" y="114" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="844" y="133" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Developer finishes session</text>
+  <text x="844" y="148" text-anchor="middle" fill="#6e7681" font-size="10">end of day · wrapping up</text>
+
+  <!-- J2-2: /Export-to-Recall -->
+  <rect x="706" y="196" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="844" y="214" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Types /Export-to-Recall</text>
+  <text x="844" y="229" text-anchor="middle" fill="#6e7681" font-size="10">in Copilot Chat</text>
+
+  <!-- J2-3: Copilot summarizes -->
+  <rect x="706" y="278" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="844" y="296" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Copilot summarizes session</text>
+  <text x="844" y="311" text-anchor="middle" fill="#6e7681" font-size="10">decisions · open questions · status</text>
+
+  <!-- J2-4: MCP Protocol Layer -->
+  <rect x="706" y="360" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="844" y="378" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">VS Code MCP Protocol Layer</text>
+  <text x="844" y="393" text-anchor="middle" fill="#6e7681" font-size="10">routes to Recall MCP Server</text>
+
+  <!-- J2-5: Recall MCP Server stores -->
+  <rect x="706" y="442" width="276" height="46" rx="7" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="844" y="460" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Recall MCP Server stores</text>
+  <text x="844" y="475" text-anchor="middle" fill="#6e7681" font-size="10">remember · set_status tools</text>
+
+  <!-- J2-6: ChromaDB saves -->
+  <rect x="706" y="524" width="276" height="46" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="844" y="542" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">ChromaDB saves permanently</text>
+  <text x="844" y="557" text-anchor="middle" fill="#6e7681" font-size="10">local .chromadb file · SQLite</text>
+
+  <!-- J2-7: Context preserved (terminal) -->
+  <rect x="706" y="610" width="276" height="54" rx="7" fill="#1a0d2e" stroke="#a371f7" stroke-width="2"/>
+  <text x="844" y="630" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">Context preserved for tomorrow</text>
+  <text x="844" y="645" text-anchor="middle" fill="#56d364" font-size="10">automatically · no manual notes</text>
+  <rect x="770" y="650" width="148" height="14" rx="6" fill="#a371f7" fill-opacity="0.25"/>
+  <text x="844" y="660" text-anchor="middle" fill="#c9b1ff" font-size="8.5" font-weight="600">✓  memory persists</text>
+
+
+  <!-- ════════════════════════════════════
+       SIDEBAR BOXES  (cx=104)
+  ════════════════════════════════════ -->
+  <rect x="28" y="114" width="152" height="40" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="1.3"/>
+  <text x="104" y="130" text-anchor="middle" fill="#ffa657" font-size="10" font-weight="600">Recall Sidebar</text>
+  <text x="104" y="143" text-anchor="middle" fill="#6e7681" font-size="9">question typed</text>
+
+  <rect x="28" y="196" width="152" height="40" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="1.3"/>
+  <text x="104" y="212" text-anchor="middle" fill="#ffa657" font-size="10" font-weight="600">FastAPI Backend</text>
+  <text x="104" y="225" text-anchor="middle" fill="#6e7681" font-size="9">localhost:8001</text>
+
+  <rect x="28" y="278" width="152" height="40" rx="6" fill="#161b22" stroke="#3fb950" stroke-width="1.3"/>
+  <text x="104" y="294" text-anchor="middle" fill="#56d364" font-size="10" font-weight="600">ChromaDB + Git</text>
+  <text x="104" y="307" text-anchor="middle" fill="#6e7681" font-size="9">context retrieve</text>
+
+  <rect x="28" y="360" width="152" height="40" rx="6" fill="#161b22" stroke="#ff7b72" stroke-width="1.3" stroke-dasharray="5,3"/>
+  <text x="104" y="376" text-anchor="middle" fill="#ffa198" font-size="10" font-weight="600">Claude API</text>
+  <text x="104" y="389" text-anchor="middle" fill="#6e7681" font-size="9">☁ external</text>
+
+  <rect x="28" y="442" width="152" height="40" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="1.3"/>
+  <text x="104" y="458" text-anchor="middle" fill="#ffa657" font-size="10" font-weight="600">Recall Sidebar</text>
+  <text x="104" y="471" text-anchor="middle" fill="#56d364" font-size="9">streamed answer</text>
+
+
+  <!-- ════════════════════════════════════
+       SIDEBAR ARROWS
+  ════════════════════════════════════ -->
+  <line x1="104" y1="154" x2="104" y2="192" stroke="#f0883e" stroke-width="1.6" marker-end="url(#mo)"/>
+  <text x="111" y="176" fill="#f0883e" font-size="8.5">HTTP</text>
+
+  <line x1="104" y1="236" x2="104" y2="274" stroke="#3fb950" stroke-width="1.6" marker-end="url(#mg)"/>
+  <text x="111" y="258" fill="#3fb950" font-size="8.5">query</text>
+
+  <line x1="104" y1="318" x2="104" y2="356" stroke="#ff7b72" stroke-width="1.6" marker-end="url(#mr)"/>
+  <text x="111" y="340" fill="#ff7b72" font-size="8.5">prompt</text>
+
+  <line x1="104" y1="400" x2="104" y2="438" stroke="#f0883e" stroke-width="1.6" marker-end="url(#mo)"/>
+  <text x="111" y="422" fill="#f0883e" font-size="8.5">SSE</text>
+
+
+  <!-- ════════════════════════════════════
+       J1 DOWN ARROWS
+  ════════════════════════════════════ -->
+  <line x1="356" y1="160" x2="356" y2="192" stroke="#58a6ff" stroke-width="1.6" marker-end="url(#mb)"/>
+  <line x1="356" y1="242" x2="356" y2="274" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <text x="362" y="261" fill="#a371f7" font-size="8.5">MCP call</text>
+  <line x1="356" y1="324" x2="356" y2="356" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <text x="362" y="343" fill="#a371f7" font-size="8.5">routes</text>
+  <line x1="356" y1="406" x2="356" y2="438" stroke="#3fb950" stroke-width="1.6" marker-end="url(#mg)"/>
+  <text x="362" y="425" fill="#3fb950" font-size="8.5">query</text>
+  <line x1="356" y1="488" x2="356" y2="520" stroke="#58a6ff" stroke-width="1.6" marker-end="url(#mb)"/>
+  <text x="362" y="507" fill="#58a6ff" font-size="8.5">returns</text>
+  <line x1="356" y1="570" x2="356" y2="606" stroke="#58a6ff" stroke-width="1.6" marker-end="url(#mb)"/>
+
+
+  <!-- ════════════════════════════════════
+       J2 DOWN ARROWS
+  ════════════════════════════════════ -->
+  <line x1="844" y1="160" x2="844" y2="192" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <line x1="844" y1="242" x2="844" y2="274" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <text x="850" y="261" fill="#a371f7" font-size="8.5">summarize</text>
+  <line x1="844" y1="324" x2="844" y2="356" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <text x="850" y="343" fill="#a371f7" font-size="8.5">MCP call</text>
+  <line x1="844" y1="406" x2="844" y2="438" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+  <text x="850" y="425" fill="#a371f7" font-size="8.5">routes</text>
+  <line x1="844" y1="488" x2="844" y2="520" stroke="#3fb950" stroke-width="1.6" marker-end="url(#mg)"/>
+  <text x="850" y="507" fill="#3fb950" font-size="8.5">write</text>
+  <line x1="844" y1="570" x2="844" y2="606" stroke="#a371f7" stroke-width="1.6" marker-end="url(#mp)"/>
+
+
+  <!-- ════════════════════════════════════
+       CHROMADB CONNECTOR LINES
+       (J1-4 MCP Server → ChromaDB  and  J2-5 MCP Server → ChromaDB)
+  ════════════════════════════════════ -->
+  <!-- J1 MCP Server right edge → ChromaDB left (read) -->
+  <path d="M 494 465 Q 540 465 524 485" stroke="#3fb950" stroke-width="1.8" fill="none" marker-end="url(#mg)"/>
+  <rect x="491" y="456" width="42" height="13" rx="4" fill="#0d1117"/>
+  <text x="512" y="465" text-anchor="middle" fill="#3fb950" font-size="8.5" font-weight="600">read</text>
+
+  <!-- J2 MCP Server left edge → ChromaDB right (write) -->
+  <path d="M 706 465 Q 660 465 676 485" stroke="#3fb950" stroke-width="1.8" fill="none" marker-end="url(#mg)"/>
+  <rect x="658" y="456" width="42" height="13" rx="4" fill="#0d1117"/>
+  <text x="679" y="465" text-anchor="middle" fill="#3fb950" font-size="8.5" font-weight="600">write</text>
+
+  <!-- J1 ChromaDB return → J1-5 box (chromadb returns) -->
+  <path d="M 524 480 Q 540 465 494 465" stroke="#3fb950" stroke-width="1.3" fill="none" stroke-dasharray="4,3"/>
+
+  <!-- J2 ChromaDB saves arrow already implied by write connector; J2-6 box confirms -->
+
+  <!-- extra subtle horizontal between J1-5 and J2-5 through ChromaDB -->
+  <!-- (already covered by read/write labels) -->
+
+
+  <!-- ════════════════════════════════════
+       DIVIDERS between sections
+  ════════════════════════════════════ -->
+  <line x1="196" y1="78" x2="196" y2="930" stroke="#21262d" stroke-width="1"/>
+  <line x1="680" y1="78" x2="680" y2="930" stroke="#21262d" stroke-width="1"/>
+  <line x1="1004" y1="78" x2="1004" y2="930" stroke="#21262d" stroke-width="1"/>
+
+
+  <!-- ════════════════════════════════════
+       LEGEND
+  ════════════════════════════════════ -->
+  <rect x="518" y="718" width="164" height="108" rx="8" fill="#161b22" stroke="#21262d" stroke-width="1.2"/>
+  <text x="600" y="734" text-anchor="middle" fill="#6e7681" font-size="9" font-weight="700" letter-spacing="1">LEGEND</text>
+
+  <line x1="530" y1="746" x2="556" y2="746" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+  <text x="562" y="749" fill="#6e7681" font-size="9.5">VS Code / HTTP</text>
+
+  <line x1="530" y1="762" x2="556" y2="762" stroke="#a371f7" stroke-width="1.8" marker-end="url(#mp)"/>
+  <text x="562" y="765" fill="#6e7681" font-size="9.5">MCP Protocol</text>
+
+  <line x1="530" y1="778" x2="556" y2="778" stroke="#3fb950" stroke-width="1.8" marker-end="url(#mg)"/>
+  <text x="562" y="781" fill="#6e7681" font-size="9.5">ChromaDB r/w</text>
+
+  <line x1="530" y1="794" x2="556" y2="794" stroke="#f0883e" stroke-width="1.8" marker-end="url(#mo)"/>
+  <text x="562" y="797" fill="#6e7681" font-size="9.5">HTTP / SSE</text>
+
+  <line x1="530" y1="810" x2="556" y2="810" stroke="#ff7b72" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#mr)"/>
+  <text x="562" y="813" fill="#6e7681" font-size="9.5">External API</text>
+
+
+  <!-- ════════════════════════════════════
+       BOTTOM CAPTION BANNERS
+  ════════════════════════════════════ -->
+  <!-- J1 bottom badge -->
+  <rect x="218" y="688" width="276" height="36" rx="7" fill="#0d2d5e" stroke="#1f6feb" stroke-width="1"/>
+  <text x="356" y="703" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="600">"/Recall-briefing" prompt</text>
+  <text x="356" y="717" text-anchor="middle" fill="#484f58" font-size="9">loads context in seconds · not minutes</text>
+
+  <!-- J2 bottom badge -->
+  <rect x="706" y="688" width="276" height="36" rx="7" fill="#1a0d2e" stroke="#a371f7" stroke-width="1"/>
+  <text x="844" y="703" text-anchor="middle" fill="#a371f7" font-size="10" font-weight="600">"/Export-to-Recall" prompt</text>
+  <text x="844" y="717" text-anchor="middle" fill="#484f58" font-size="9">one command saves everything</text>
+
+  <!-- Sidebar bottom badge -->
+  <rect x="28" y="504" width="152" height="36" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="1"/>
+  <text x="104" y="519" text-anchor="middle" fill="#ffa657" font-size="9.5" font-weight="600">Context-heavy chat</text>
+  <text x="104" y="532" text-anchor="middle" fill="#484f58" font-size="8.5">with your codebase</text>
+
+
+  <!-- ════════════════════════════════════
+       CYCLE ARROWS (bottom): tomorrow = today's export
+  ════════════════════════════════════ -->
+  <!-- arc from J2 terminal node → J1 terminal node through bottom -->
+  <path d="M 844 720 L 844 840 Q 844 870 810 870 L 390 870 Q 356 870 356 840 L 356 720"
+    stroke="#3fb950" stroke-width="1.5" fill="none" stroke-dasharray="6,4" marker-end="url(#mg)"/>
+  <rect x="480" y="876" width="240" height="18" rx="7" fill="#0d2319"/>
+  <text x="600" y="888" text-anchor="middle" fill="#3fb950" font-size="9.5" font-weight="600">tomorrow's briefing uses today's export</text>
+
+</svg>
+</body>
+</html>

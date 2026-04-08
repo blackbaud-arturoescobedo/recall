@@ -3,3 +3,4 @@ uvicorn
 chromadb
 anthropic
 python-dotenv
+mcp

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recall — Value Slide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", "Calibri", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 48px 24px;
+      gap: 20px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .title span { color: #007acc; }
+
+    /* ── Two columns ── */
+    .columns {
+      display: flex;
+      gap: 0;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 0 32px;
+    }
+    .col:first-child { padding-left: 0; }
+    .col:last-child  { padding-right: 0; }
+
+    .col-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #007acc;
+    }
+
+    .col-items {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      flex: 1;
+    }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 16px;
+      color: #cccccc;
+      line-height: 1.55;
+    }
+
+    .check {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+    .col-dev  .check { background: rgba(0,122,204,0.2); color: #007acc; border: 1.5px solid #007acc; }
+    .col-biz  .check { background: rgba(78,201,78,0.15); color: #4ec94e; border: 1.5px solid #4ec94e; }
+
+    .item-text strong { color: #ffffff; }
+
+    /* ── Vertical divider ── */
+    .vdivider {
+      width: 1px;
+      background: #3c3c3c;
+      flex: 0 0 1px;
+      align-self: stretch;
+      margin: 0 4px;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Title -->
+  <div class="title">Real Value for <span>Developers</span> and Blackbaud</div>
+
+  <!-- Two columns -->
+  <div class="columns">
+
+    <!-- Left: Developers -->
+    <div class="col col-dev">
+      <div class="col-title">&#128105;&#8205;&#128187; For Developers</div>
+      <div class="col-items">
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">Stop re-explaining context <strong>every session</strong></div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">New team members <strong>onboard faster</strong></div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">Architectural decisions <strong>never get lost</strong></div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">Works today — <strong>no IT approval needed</strong></div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">Works alongside <strong>Copilot and Claude Code</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="vdivider"></div>
+
+    <!-- Right: Blackbaud -->
+    <div class="col col-biz">
+      <div class="col-title">&#127970; For Blackbaud</div>
+      <div class="col-items">
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text"><strong>Reduced developer time waste</strong> across the org</div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text"><strong>Knowledge retention</strong> when contributors leave</div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text"><strong>Privacy first</strong> — no code confidentiality concerns</div>
+        </div>
+        <div class="item">
+          <div class="check">&#10003;</div>
+          <div class="item-text">Extensible to customers — <strong>grant writers, fundraisers, program managers</strong></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recall — Built and Working Today</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", "Calibri", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 48px 22px;
+      gap: 16px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .title span { color: #007acc; }
+
+    /* ── Comparison table ── */
+    .table-section {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #007acc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    thead tr {
+      background: #2d2d30;
+    }
+
+    thead th {
+      padding: 7px 10px;
+      text-align: center;
+      font-weight: 700;
+      color: #9cdcfe;
+      border-bottom: 2px solid #007acc;
+      white-space: nowrap;
+    }
+    thead th:first-child {
+      text-align: left;
+      min-width: 180px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #2d2d30;
+    }
+    tbody tr:nth-child(even) {
+      background: #252526;
+    }
+
+    tbody tr.recall-row {
+      background: rgba(0, 122, 204, 0.15);
+      border-top: 1px solid rgba(0,122,204,0.5);
+      border-bottom: 1px solid rgba(0,122,204,0.5);
+    }
+    tbody tr.recall-row td {
+      color: #ffffff;
+      font-weight: 700;
+    }
+    tbody tr.recall-row td:first-child {
+      color: #007acc;
+    }
+
+    tbody td {
+      padding: 6px 10px;
+      text-align: center;
+      color: #aaaaaa;
+    }
+    tbody td:first-child {
+      text-align: left;
+      color: #cccccc;
+      font-weight: 500;
+    }
+
+    .tick { color: #4ec94e; font-size: 14px; }
+    .cross { color: #f44747; font-size: 14px; }
+
+    /* ── Bottom two columns ── */
+    .bottom-section {
+      display: flex;
+      gap: 16px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .tech-col {
+      flex: 1;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tech-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #007acc;
+      border-bottom: 1px solid #3c3c3c;
+      padding-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .tech-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .tech-col ul li {
+      font-size: 12px;
+      color: #cccccc;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.4;
+    }
+    .tech-col ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: #007acc;
+      font-weight: 700;
+    }
+
+    .tech-col ul li code {
+      background: #1e1e1e;
+      border: 1px solid #3c3c3c;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 10.5px;
+      color: #9cdcfe;
+    }
+
+    /* ── Banner ── */
+    .banner {
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-left: 4px solid #007acc;
+      border-radius: 8px;
+      padding: 10px 24px;
+      letter-spacing: 0.01em;
+    }
+    .banner span { color: #007acc; }
+  </style>
+</head>
+<body>
+
+  <!-- Title -->
+  <div class="title"><span>Built</span> and Working Today</div>
+
+  <!-- Comparison table -->
+  <div class="table-section">
+    <div class="section-label">How Recall Compares</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Solution</th>
+          <th>Persistent Memory</th>
+          <th>Works in VS Code</th>
+          <th>Stays Local</th>
+          <th>Never Expires</th>
+          <th>No IT Approval</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Claude Project Knowledge</td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+        </tr>
+        <tr>
+          <td>Copilot Memory</td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="cross">❌</span></td>
+        </tr>
+        <tr>
+          <td>Chronicle</td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+        </tr>
+        <tr>
+          <td>Custom CLI Tools</td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="cross">❌</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+        </tr>
+        <tr class="recall-row">
+          <td>⚡ Recall</td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+          <td><span class="tick">✅</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bottom two columns -->
+  <div class="bottom-section">
+
+    <div class="tech-col">
+      <div class="tech-col-title">&#128296; What Was Built</div>
+      <ul>
+        <li>VS Code Extension <code>TypeScript</code></li>
+        <li>Python FastAPI Backend</li>
+        <li>ChromaDB Vector Database</li>
+        <li>FastMCP Server</li>
+        <li>Streaming SSE responses</li>
+        <li>Packaged as <code>18KB VSIX</code></li>
+      </ul>
+    </div>
+
+    <div class="tech-col">
+      <div class="tech-col-title">&#9881; How It Works</div>
+      <ul>
+        <li>RAG — semantic retrieval from ChromaDB</li>
+        <li>Chunks injected into Claude API prompt</li>
+        <li>Git history read via subprocess</li>
+        <li>MCP tools exposed to Copilot</li>
+        <li>Local SQLite storage only</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Banner -->
+  <div class="banner">
+    <span>No cloud infrastructure.</span> &nbsp;No DevOps. &nbsp;No IT approval. &nbsp;Just <span>install and run.</span>
+  </div>
+
+</body>
+</html>

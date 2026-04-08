@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Recall — RAG Flow</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0d1117; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+</style>
+</head>
+<body>
+<svg width="1100" height="920" viewBox="0 0 1100 920" xmlns="http://www.w3.org/2000/svg"
+  font-family="'Segoe UI',system-ui,sans-serif">
+
+  <!-- ── markers ─────────────────────────────────────── -->
+  <defs>
+    <marker id="mb" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#58a6ff"/></marker>
+    <marker id="mg" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#3fb950"/></marker>
+    <marker id="mo" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#f0883e"/></marker>
+    <marker id="mp" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#a371f7"/></marker>
+    <marker id="mr" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#ff7b72"/></marker>
+    <marker id="mgr" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#6e7681"/></marker>
+  </defs>
+
+  <!-- ── canvas bg ────────────────────────────────────── -->
+  <rect width="1100" height="920" fill="#0d1117" rx="14"/>
+
+  <!-- ── title ───────────────────────────────────────── -->
+  <text x="550" y="33" text-anchor="middle" fill="#e6edf3" font-size="18" font-weight="700" letter-spacing="0.3">Recall — RAG Flow Diagram</text>
+  <text x="550" y="51" text-anchor="middle" fill="#484f58" font-size="11">Retrieval-Augmented Generation · Command Handling · MCP Layer</text>
+
+  <!-- ── section labels & divider ────────────────────── -->
+  <text x="315" y="65" text-anchor="middle" fill="#58a6ff" font-size="9" font-weight="700" letter-spacing="1.8">RAG FLOW</text>
+  <line x1="584" y1="58" x2="584" y2="748" stroke="#21262d" stroke-width="1.5"/>
+  <text x="790" y="65" text-anchor="middle" fill="#f0883e" font-size="9" font-weight="700" letter-spacing="1.8">COMMAND PATH  ( # COMMANDS )</text>
+
+  <!-- ── MCP section bg ───────────────────────────────── -->
+  <rect x="18" y="766" width="1064" height="134" rx="8" fill="#13111a" stroke="#2d2741" stroke-width="1.5"/>
+  <text x="42" y="786" fill="#a371f7" font-size="9" font-weight="700" letter-spacing="1.8">MCP LAYER  —  COPILOT INTEGRATION</text>
+
+
+  <!-- ════════════════════════════════════════════════════
+       ARROWS / CONNECTIONS  (drawn first, under boxes)
+  ════════════════════════════════════════════════════ -->
+
+  <!-- main: s1→s2 -->
+  <line x1="315" y1="126" x2="315" y2="148" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+
+  <!-- main: s2→diamond -->
+  <line x1="315" y1="202" x2="315" y2="224" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+
+  <!-- main: diamond NO → s3 -->
+  <line x1="315" y1="276" x2="315" y2="298" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+  <rect x="319" y="279" width="22" height="14" rx="3" fill="#0d1117"/>
+  <text x="330" y="289" text-anchor="middle" fill="#e3b341" font-size="9" font-weight="600">NO</text>
+
+  <!-- main: diamond YES → C1 (horizontal) -->
+  <line x1="353" y1="250" x2="638" y2="250" stroke="#f0883e" stroke-width="1.8" marker-end="url(#mo)"/>
+  <rect x="440" y="240" width="26" height="14" rx="3" fill="#0d1117"/>
+  <text x="453" y="250" text-anchor="middle" fill="#e3b341" font-size="9" font-weight="600">YES</text>
+
+  <!-- main: s3→s4 -->
+  <line x1="315" y1="352" x2="315" y2="374" stroke="#3fb950" stroke-width="1.8" marker-end="url(#mg)"/>
+  <rect x="319" y="357" width="84" height="14" rx="3" fill="#0d1117"/>
+  <text x="361" y="367" text-anchor="middle" fill="#3fb950" font-size="9">vector results</text>
+
+  <!-- main: s4→s5 -->
+  <line x1="315" y1="428" x2="315" y2="450" stroke="#3fb950" stroke-width="1.8" marker-end="url(#mg)"/>
+
+  <!-- main: s5→s6 -->
+  <line x1="315" y1="504" x2="315" y2="526" stroke="#f0883e" stroke-width="1.8" marker-end="url(#mo)"/>
+  <rect x="319" y="508" width="90" height="14" rx="3" fill="#0d1117"/>
+  <text x="364" y="518" text-anchor="middle" fill="#f0883e" font-size="9">enriched prompt</text>
+
+  <!-- main: s6→s7 -->
+  <line x1="315" y1="592" x2="315" y2="614" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+  <rect x="319" y="596" width="72" height="14" rx="3" fill="#0d1117"/>
+  <text x="355" y="606" text-anchor="middle" fill="#58a6ff" font-size="9">SSE tokens</text>
+
+  <!-- main: s7→s8 -->
+  <line x1="315" y1="668" x2="315" y2="690" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#mb)"/>
+
+  <!-- cmd: C1→C2 -->
+  <line x1="790" y1="274" x2="790" y2="298" stroke="#f0883e" stroke-width="1.8" marker-end="url(#mo)"/>
+
+  <!-- cmd: C2→C3 (conditional, dashed) -->
+  <line x1="790" y1="352" x2="790" y2="374" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#mg)"/>
+  <rect x="795" y="356" width="72" height="14" rx="3" fill="#0d1117"/>
+  <text x="831" y="366" text-anchor="middle" fill="#3fb950" font-size="9">if applicable</text>
+
+  <!-- cmd: C3 → "sidebar" endpoint -->
+  <line x1="790" y1="428" x2="790" y2="460" stroke="#f0883e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#mo)"/>
+
+  <!-- cmd return: route from endpoint (790,460) → right → down → left → s8 right edge -->
+  <path d="M 790 460 L 960 460 L 960 714 L 466 714"
+    stroke="#f0883e" stroke-width="1.3" fill="none" stroke-dasharray="5,3" marker-end="url(#mo)"/>
+  <rect x="828" y="722" width="100" height="14" rx="3" fill="#0d1117"/>
+  <text x="878" y="732" text-anchor="middle" fill="#f0883e" font-size="9">response → sidebar</text>
+
+  <!-- MCP: M1→M2 -->
+  <line x1="204" y1="820" x2="264" y2="820" stroke="#a371f7" stroke-width="1.8" marker-end="url(#mp)"/>
+  <rect x="208" y="809" width="52" height="14" rx="3" fill="#13111a"/>
+  <text x="234" y="819" text-anchor="middle" fill="#a371f7" font-size="9">MCP</text>
+
+  <!-- MCP: M2→M3 -->
+  <line x1="484" y1="820" x2="544" y2="820" stroke="#a371f7" stroke-width="1.8" marker-end="url(#mp)"/>
+  <rect x="488" y="809" width="52" height="14" rx="3" fill="#13111a"/>
+  <text x="514" y="819" text-anchor="middle" fill="#a371f7" font-size="9">stdio</text>
+
+  <!-- MCP: M3→M4 -->
+  <line x1="764" y1="820" x2="814" y2="820" stroke="#3fb950" stroke-width="1.8" marker-end="url(#mg)"/>
+  <rect x="768" y="809" width="42" height="14" rx="3" fill="#13111a"/>
+  <text x="789" y="819" text-anchor="middle" fill="#3fb950" font-size="9">r/w</text>
+
+  <!-- MCP: return M4→M1 (below) -->
+  <path d="M 940 846 L 940 876 L 119 876 L 119 848"
+    stroke="#6e7681" stroke-width="1.3" fill="none" stroke-dasharray="5,3" marker-end="url(#mgr)"/>
+  <text x="530" y="893" text-anchor="middle" fill="#6e7681" font-size="9">result returned to Copilot Chat</text>
+
+
+  <!-- ════════════════════════════════════════════════════
+       BOXES
+  ════════════════════════════════════════════════════ -->
+
+  <!-- helper macro: step circle -->
+  <!-- s1 ─── Developer types question ─── y=76 -->
+  <circle cx="172" cy="99" r="13" fill="#1f6feb"/>
+  <text x="172" y="103" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">1</text>
+  <rect x="190" y="76" width="250" height="50" rx="7" fill="#161b22" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="315" y="97" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Developer types question</text>
+  <text x="315" y="113" text-anchor="middle" fill="#6e7681" font-size="10">Recall Sidebar · VS Code Webview</text>
+
+  <!-- s2 ─── HTTP POST ─── y=148 -->
+  <circle cx="172" cy="173" r="13" fill="#1f6feb"/>
+  <text x="172" y="177" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+  <rect x="190" y="150" width="250" height="50" rx="7" fill="#161b22" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="315" y="171" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">HTTP POST to FastAPI Backend</text>
+  <text x="315" y="187" text-anchor="middle" fill="#6e7681" font-size="10">localhost:8001/chat · JSON body</text>
+
+  <!-- diamond ─── starts with #? ─── center (315, 250) -->
+  <polygon points="315,222 353,250 315,278 277,250" fill="#1c2128" stroke="#d29922" stroke-width="1.8"/>
+  <text x="315" y="246" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">starts</text>
+  <text x="315" y="259" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">with #?</text>
+
+  <!-- s3 ─── ChromaDB Search ─── y=298 -->
+  <circle cx="172" cy="323" r="13" fill="#1a7f3c"/>
+  <text x="172" y="327" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+  <rect x="190" y="300" width="250" height="50" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="315" y="321" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">ChromaDB Semantic Search</text>
+  <text x="315" y="337" text-anchor="middle" fill="#6e7681" font-size="10">cosine similarity · query embedding</text>
+
+  <!-- s4 ─── Top 5 Chunks ─── y=374 -->
+  <circle cx="172" cy="399" r="13" fill="#1a7f3c"/>
+  <text x="172" y="403" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">4</text>
+  <rect x="190" y="376" width="250" height="50" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="315" y="397" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">Top 5 Relevant Chunks Returned</text>
+  <text x="315" y="413" text-anchor="middle" fill="#6e7681" font-size="10">code files · memories · git history</text>
+
+  <!-- s5 ─── Build Prompt ─── y=450 -->
+  <circle cx="172" cy="475" r="13" fill="#974d14"/>
+  <text x="172" y="479" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">5</text>
+  <rect x="190" y="452" width="250" height="50" rx="7" fill="#161b22" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="315" y="473" text-anchor="middle" fill="#ffa657" font-size="11" font-weight="600">Build Claude Prompt + Context</text>
+  <text x="315" y="489" text-anchor="middle" fill="#6e7681" font-size="10">inject retrieved chunks → system prompt</text>
+
+  <!-- s6 ─── Claude API ─── y=526 (h=64) -->
+  <circle cx="172" cy="557" r="13" fill="#7d1c1c"/>
+  <text x="172" y="561" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">6</text>
+  <rect x="190" y="528" width="250" height="62" rx="7" fill="#161b22" stroke="#ff7b72" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="315" y="549" text-anchor="middle" fill="#ffa198" font-size="11" font-weight="600">Claude API (Anthropic)</text>
+  <text x="315" y="565" text-anchor="middle" fill="#6e7681" font-size="10">claude-sonnet-4-6 · max_tokens 4096</text>
+  <rect x="247" y="574" width="136" height="14" rx="6" fill="#ff7b72" fill-opacity="0.18"/>
+  <text x="315" y="584" text-anchor="middle" fill="#ff7b72" font-size="9">☁  external API call</text>
+
+  <!-- s7 ─── SSE Stream ─── y=614 -->
+  <circle cx="172" cy="639" r="13" fill="#1f6feb"/>
+  <text x="172" y="643" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">7</text>
+  <rect x="190" y="616" width="250" height="50" rx="7" fill="#161b22" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="315" y="637" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">SSE Stream → VS Code Sidebar</text>
+  <text x="315" y="653" text-anchor="middle" fill="#6e7681" font-size="10">token-by-token · text/event-stream</text>
+
+  <!-- s8 ─── Developer sees answer ─── y=690 -->
+  <circle cx="172" cy="715" r="13" fill="#1f6feb"/>
+  <text x="172" y="719" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">8</text>
+  <rect x="190" y="692" width="250" height="50" rx="7" fill="#0d2d5e" stroke="#1f6feb" stroke-width="2"/>
+  <text x="315" y="713" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Developer Sees Grounded Answer</text>
+  <text x="315" y="729" text-anchor="middle" fill="#6e7681" font-size="10">based on codebase + saved memories</text>
+
+
+  <!-- ── COMMAND PATH ──────────────────────────────── -->
+
+  <!-- C1 ─── Parse # Command ─── y=226 (aligned with diamond) -->
+  <rect x="638" y="226" width="304" height="50" rx="7" fill="#161b22" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="790" y="247" text-anchor="middle" fill="#ffa657" font-size="11" font-weight="600">Parse # Command</text>
+  <text x="790" y="263" text-anchor="middle" fill="#6e7681" font-size="10">#remember #note #status #done #git #forget…</text>
+
+  <!-- C2 ─── Instant Response ─── y=298 -->
+  <rect x="638" y="298" width="304" height="52" rx="7" fill="#161b22" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="790" y="319" text-anchor="middle" fill="#ffa657" font-size="11" font-weight="600">Instant JSON Response</text>
+  <text x="790" y="335" text-anchor="middle" fill="#6e7681" font-size="10">no LLM call · no embedding search</text>
+
+  <!-- C3 ─── Store to ChromaDB ─── y=374 (dashed, conditional) -->
+  <rect x="638" y="374" width="304" height="52" rx="7" fill="#0d1c12" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="790" y="395" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">Store to ChromaDB</text>
+  <text x="790" y="411" text-anchor="middle" fill="#6e7681" font-size="10">if: remember · note · status · done</text>
+
+  <!-- C3 tag -->
+  <rect x="638" y="364" width="88" height="15" rx="6" fill="#0d1c12" stroke="#3fb950" stroke-width="0.8"/>
+  <text x="682" y="374" text-anchor="middle" fill="#3fb950" font-size="8.5" font-weight="600">if applicable</text>
+
+  <!-- C skip tag on C2 -->
+  <rect x="852" y="305" width="80" height="15" rx="6" fill="#0d1117" stroke="#f0883e" stroke-width="0.8"/>
+  <text x="892" y="315" text-anchor="middle" fill="#f0883e" font-size="8.5">skip LLM ✓</text>
+
+
+  <!-- ── MCP BOXES ──────────────────────────────────── -->
+
+  <!-- M1 ─── Copilot Chat ─── x=34 -->
+  <rect x="34" y="796" width="170" height="50" rx="7" fill="#0d1117" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="119" y="817" text-anchor="middle" fill="#79c0ff" font-size="11" font-weight="600">Copilot Chat</text>
+  <text x="119" y="833" text-anchor="middle" fill="#6e7681" font-size="10">Agent Mode</text>
+
+  <!-- M2 ─── VS Code MCP Protocol ─── x=264 -->
+  <rect x="264" y="796" width="220" height="50" rx="7" fill="#0d1117" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="374" y="817" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">VS Code MCP Protocol</text>
+  <text x="374" y="833" text-anchor="middle" fill="#6e7681" font-size="10">stdio transport · routing layer</text>
+
+  <!-- M3 ─── MCP Server ─── x=544 -->
+  <rect x="544" y="796" width="220" height="50" rx="7" fill="#0d1117" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="654" y="817" text-anchor="middle" fill="#c9b1ff" font-size="11" font-weight="600">MCP Server (FastMCP)</text>
+  <text x="654" y="833" text-anchor="middle" fill="#6e7681" font-size="10">remember · search · list · forget</text>
+
+  <!-- M4 ─── ChromaDB ─── x=814 -->
+  <rect x="814" y="796" width="252" height="50" rx="7" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="940" y="817" text-anchor="middle" fill="#56d364" font-size="11" font-weight="600">ChromaDB (Local SQLite)</text>
+  <text x="940" y="833" text-anchor="middle" fill="#6e7681" font-size="10">c:\recall\.chromadb</text>
+
+</svg>
+</body>
+</html>

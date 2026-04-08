@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recall — Solution Slide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", "Calibri", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 48px 24px;
+      gap: 18px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .title span { color: #007acc; }
+
+    /* ── Tagline ── */
+    .tagline {
+      text-align: center;
+      font-size: 15px;
+      color: #9cdcfe;
+      font-style: italic;
+      font-weight: 500;
+      flex: 0 0 auto;
+      padding: 10px 32px;
+      border: 1px solid #2a3a4a;
+      border-radius: 8px;
+      background: rgba(0, 122, 204, 0.07);
+      line-height: 1.5;
+    }
+    .tagline strong { color: #ffffff; font-style: normal; }
+
+    /* ── Three columns ── */
+    .columns {
+      display: flex;
+      gap: 16px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .col {
+      flex: 1;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-radius: 10px;
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .col::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .col.sidebar::before  { background: #007acc; }
+    .col.mcp::before      { background: #4ec94e; }
+    .col.local::before    { background: #dcdcaa; }
+
+    .col-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .col-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .col.sidebar .col-title  { color: #007acc; }
+    .col.mcp     .col-title  { color: #4ec94e; }
+    .col.local   .col-title  { color: #dcdcaa; }
+
+    .col-divider {
+      height: 1px;
+      background: #3c3c3c;
+    }
+
+    .col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+    }
+
+    .col ul li {
+      font-size: 12.5px;
+      color: #cccccc;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .col ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .col.sidebar ul li::before { color: #007acc; }
+    .col.mcp     ul li::before { color: #4ec94e; }
+    .col.local   ul li::before { color: #dcdcaa; }
+
+    .col ul li code {
+      background: #1e1e1e;
+      border: 1px solid #3c3c3c;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 11px;
+      color: #9cdcfe;
+    }
+
+    /* ── Bottom banner ── */
+    .banner {
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 12.5px;
+      color: #888888;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-radius: 8px;
+      padding: 10px 24px;
+      line-height: 1.5;
+    }
+    .banner strong { color: #dcdcaa; }
+    .banner span   { color: #007acc; }
+  </style>
+</head>
+<body>
+
+  <!-- Title -->
+  <div class="title">Recall — <span>Persistent Memory</span> for Your AI Tools</div>
+
+  <!-- Tagline -->
+  <div class="tagline">
+    Think of it as <strong>Claude's Project Knowledge</strong> — built into VS Code, running locally, and working alongside <strong>any AI tool you already use</strong>
+  </div>
+
+  <!-- Three columns -->
+  <div class="columns">
+
+    <!-- Column 1: Recall Sidebar -->
+    <div class="col sidebar">
+      <div class="col-icon">&#128172;</div>
+      <div class="col-title">Standalone Chat</div>
+      <div class="col-divider"></div>
+      <ul>
+        <li>Powered by Claude Sonnet</li>
+        <li>Searches codebase + saved memories</li>
+        <li>Reads git history automatically</li>
+        <li><code>#remember</code> <code>#note</code> <code>#status</code> <code>#done</code></li>
+      </ul>
+    </div>
+
+    <!-- Column 2: MCP Integration -->
+    <div class="col mcp">
+      <div class="col-icon">&#128268;</div>
+      <div class="col-title">Works With Copilot</div>
+      <div class="col-divider"></div>
+      <ul>
+        <li>Recall MCP Server runs in background</li>
+        <li><code>/Recall-Briefing</code> — start with context</li>
+        <li><code>/Export-to-Recall</code> — save session</li>
+        <li>No workflow change needed</li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Local Storage -->
+    <div class="col local">
+      <div class="col-icon">&#128274;</div>
+      <div class="col-title">100% Local</div>
+      <div class="col-divider"></div>
+      <ul>
+        <li>ChromaDB SQLite file on disk</li>
+        <li>Nothing leaves your machine</li>
+        <li>No IT approval needed</li>
+        <li>No expiry — ever</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Bottom banner -->
+  <div class="banner">
+    Everything stored in <strong>.chromadb</strong> on your local disk &nbsp;·&nbsp;
+    Only external call: <span>Anthropic API</span> for chat responses &nbsp;·&nbsp;
+    Your codebase <strong>never leaves your machine</strong>
+  </div>
+
+</body>
+</html>

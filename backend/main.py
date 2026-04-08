@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import anthropic
 import os
 import httpx
+import json
 import warnings
 from dotenv import load_dotenv
 from indexer import (
@@ -91,11 +93,79 @@ def remove_memory(request: DeleteMemoryRequest):
         return {"deleted": success}
     return {"deleted": False, "error": "provide memory_id or memory_type"}
 
-@app.post("/chat", response_model=ChatResponse)
+@app.post("/chat")
 async def chat(request: ChatRequest):
     
     message = request.message.strip()
-    
+
+    # Handle multi-line command blocks (pasted from Copilot/Claude export)
+    command_prefixes = ("#remember", "#note", "#status", "#forget")
+    lines = [l.strip() for l in message.splitlines() if l.strip()]
+    if len(lines) > 1 and all(l.lower().startswith(command_prefixes) for l in lines):
+        results = []
+        for line in lines:
+            lower = line.lower()
+            if lower.startswith("#remember"):
+                content = line[9:].strip()
+                if content:
+                    save_memory(content=content, memory_type="remember")
+                    results.append(f"💾 **Remembered:** {content}")
+            elif lower.startswith("#note"):
+                content = line[5:].strip()
+                if content:
+                    save_memory(content=content, memory_type="note")
+                    results.append(f"📝 **Note:** {content}")
+            elif lower.startswith("#status"):
+                content = line[7:].strip()
+                if content:
+                    save_memory(content=content, memory_type="status")
+                    results.append(f"📍 **Status:** {content}")
+            elif lower.startswith("#forget"):
+                content = line[7:].strip()
+                if content:
+                    memories = get_memories(limit=100)
+                    deleted = [m["content"][:50] for m in memories if content.lower() in m["content"].lower() and delete_memory(m["id"])]
+                    results.append(f"🗑️ **Forgot** '{content}' ({len(deleted)} removed)")
+        return ChatResponse(
+            response=f"✅ Saved {len(results)} memories:\n\n" + "\n".join(results),
+            context_used=[]
+        )
+
+    # Handle #done command — session wrap-up
+    if message.lower().startswith("#done"):
+        recent_memories = get_memories(limit=10)
+        memory_text = ""
+        if recent_memories:
+            memory_text = "\n\nSaved context from this project:\n"
+            for m in recent_memories:
+                emoji = "💾" if m["type"] == "remember" else "📝" if m["type"] == "note" else "📍"
+                memory_text += f"{emoji} ({m['date']}): {m['content']}\n"
+
+        history_text = ""
+        if request.conversation_history:
+            history_text = "\n\nThis session's conversation:\n"
+            for turn in request.conversation_history[-10:]:
+                role = "Dev" if turn["role"] == "user" else "Recall"
+                content = turn["content"][:150] + "..." if len(turn["content"]) > 150 else turn["content"]
+                history_text += f"{role}: {content}\n"
+
+        summary_response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=600,
+            system="You are Recall, a developer assistant. Generate a concise, actionable session wrap-up.",
+            messages=[{
+                "role": "user",
+                "content": f"Generate a session summary with three short sections:\n## What was worked on\n## Key decisions made\n## Pick up next time\n\nKeep each section to 2-3 bullet points.{memory_text}{history_text}"
+            }]
+        )
+
+        summary = summary_response.content[0].text
+        save_memory(content=f"Session wrap-up: {summary[:400]}", memory_type="status")
+        return ChatResponse(
+            response=f"## 📋 Session Wrap-up\n\n{summary}\n\n---\n*Summary saved to memory.*",
+            context_used=[]
+        )
+
     # Handle #remember command
     if message.lower().startswith("#remember"):
         content = message[9:].strip()
@@ -153,7 +223,7 @@ async def chat(request: ChatRequest):
         response_text = "## 🧠 Recall's Memory\n\n"
         for m in memories:
             emoji = "💾" if m["type"] == "remember" else "📝" if m["type"] == "note" else "📍"
-            response_text += f"{emoji} **{m['date']}** ({m['type']})\n{m['content']}\n`id: {m['id']}`\n\n"
+            response_text += f"{emoji} **{m['date']}** ({m['type']})\n{m['content']}\n\n"
         
         return ChatResponse(response=response_text, context_used=[])
     
@@ -219,11 +289,13 @@ async def chat(request: ChatRequest):
     if context_chunks:
         context_text = "\n\n## Relevant context from your codebase and memory:\n"
         for chunk in context_chunks:
-            context_text += f"\n### From {chunk['filename']}:\n{chunk['content']}\n"
+            # Truncate each chunk to 600 chars to keep total context under control
+            snippet = chunk['content'][:600] + ("..." if len(chunk['content']) > 600 else "")
+            context_text += f"\n### From {chunk['filename']}:\n{snippet}\n"
     
-    # Build messages from conversation history
+    # Build messages from conversation history — cap at last 8 turns to stay under 30k TPM
     messages = []
-    for turn in request.conversation_history:
+    for turn in request.conversation_history[-8:]:
         messages.append({
             "role": turn["role"],
             "content": turn["content"]
@@ -241,21 +313,23 @@ async def chat(request: ChatRequest):
         "content": user_message
     })
     
-    # Call Claude API
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1000,
-        system="""You are Recall, a developer assistant with persistent memory 
-        of the user's codebase, architecture decisions, and past conversations. 
-        You help developers without requiring them to re-explain their project 
-        context every session. When relevant context from the codebase or git 
-        history is provided, use it to give accurate and specific answers.
-        When asked about recent work or file changes, reference the git history
-        provided rather than guessing.""",
-        messages=messages
-    )
-    
-    return ChatResponse(
-        response=response.content[0].text,
-        context_used=[c["filepath"] for c in context_chunks]
-    )
+    context_filepaths = [c["filepath"] for c in context_chunks]
+
+    def stream_response():
+        with client.messages.stream(
+            model="claude-sonnet-4-6",
+            max_tokens=2048,
+            system="""You are Recall, a developer assistant with persistent memory 
+            of the user's codebase, architecture decisions, and past conversations. 
+            You help developers without requiring them to re-explain their project 
+            context every session. When relevant context from the codebase or git 
+            history is provided, use it to give accurate and specific answers.
+            When asked about recent work or file changes, reference the git history
+            provided rather than guessing.""",
+            messages=messages
+        ) as stream:
+            for text in stream.text_stream:
+                yield f"data: {json.dumps({'token': text})}\n\n"
+        yield f"data: {json.dumps({'done': True, 'context_used': context_filepaths})}\n\n"
+
+    return StreamingResponse(stream_response(), media_type="text/event-stream")

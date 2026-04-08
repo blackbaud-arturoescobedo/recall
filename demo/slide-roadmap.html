@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recall — The Path Forward</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", "Calibri", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 48px 22px;
+      gap: 16px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .title span { color: #007acc; }
+
+    /* ── Three columns ── */
+    .columns {
+      display: flex;
+      gap: 14px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #3c3c3c;
+    }
+
+    .col-header {
+      padding: 11px 16px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .col.built  .col-header { background: rgba(78, 201, 78, 0.22);  color: #4ec94e; border-bottom: 2px solid #4ec94e; }
+    .col.soon   .col-header { background: rgba(0, 122, 204, 0.22);  color: #007acc; border-bottom: 2px solid #007acc; }
+    .col.future .col-header { background: rgba(179, 98, 255, 0.22); color: #b362ff; border-bottom: 2px solid #b362ff; }
+
+    .col-body {
+      flex: 1;
+      background: #252526;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .col-body ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .col-body ul li {
+      font-size: 12px;
+      color: #cccccc;
+      padding: 5px 0 5px 16px;
+      position: relative;
+      line-height: 1.4;
+      border-bottom: 1px solid #2d2d2d;
+    }
+    .col-body ul li:last-child { border-bottom: none; }
+
+    .col-body ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .col.built  .col-body ul li::before { color: #4ec94e; }
+    .col.soon   .col-body ul li::before { color: #007acc; }
+    .col.future .col-body ul li::before { color: #b362ff; }
+
+    .col-body ul li code {
+      background: #1e1e1e;
+      border: 1px solid #3c3c3c;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 10px;
+      color: #9cdcfe;
+    }
+
+    /* ── Bottom callout ── */
+    .callout {
+      flex: 0 0 auto;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-left: 4px solid #007acc;
+      border-radius: 8px;
+      padding: 12px 20px;
+    }
+
+    .callout p {
+      font-size: 12.5px;
+      color: #cccccc;
+      line-height: 1.65;
+    }
+    .callout p strong { color: #ffffff; }
+    .callout p em     { color: #9cdcfe; font-style: normal; }
+  </style>
+</head>
+<body>
+
+  <!-- Title -->
+  <div class="title">The <span>Path Forward</span></div>
+
+  <!-- Three columns -->
+  <div class="columns">
+
+    <!-- Column 1: Built -->
+    <div class="col built">
+      <div class="col-header">&#9989; Built</div>
+      <div class="col-body">
+        <ul>
+          <li>VS Code sidebar chat</li>
+          <li>Claude API integration</li>
+          <li>ChromaDB local storage</li>
+          <li>RAG semantic search</li>
+          <li>Git history integration</li>
+          <li><code>#remember</code> <code>#note</code> <code>#status</code> <code>#done</code></li>
+          <li>MCP server for Copilot</li>
+          <li><code>/Recall-Briefing</code> prompt</li>
+          <li><code>/Export-to-Recall</code> prompt</li>
+          <li>Packaged VSIX extension</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Column 2: Soon -->
+    <div class="col soon">
+      <div class="col-header">&#128316; Soon</div>
+      <div class="col-body">
+        <ul>
+          <li>Auto-start backend</li>
+          <li>CLI version (Chronicle alternative)</li>
+          <li>ADO board integration</li>
+          <li>Team shared memory</li>
+          <li>Workspace auto-indexing</li>
+          <li>Settings UI</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Column 3: Future -->
+    <div class="col future">
+      <div class="col-header">&#128302; Future</div>
+      <div class="col-body">
+        <ul>
+          <li>Beyond developers — grant writers, fundraisers, program managers</li>
+          <li>Plugin architecture for any data source</li>
+          <li>Blackbaud product integration</li>
+          <li>RE NXT developer memory layer</li>
+          <li>Enterprise team knowledge base</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom callout -->
+  <div class="callout">
+    <p>
+      <strong>Recall isn't a finished product. It's a foundation.</strong>
+      The same RAG architecture that gives developers persistent memory
+      can give <em>anyone at Blackbaud — and any Blackbaud customer</em> — an AI that actually <strong>remembers.</strong>
+    </p>
+  </div>
+
+</body>
+</html>

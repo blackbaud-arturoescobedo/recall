@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recall — Problem Slide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", "Calibri", sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 36px 48px 28px;
+      gap: 20px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex: 0 0 auto;
+    }
+    .title span {
+      color: #007acc;
+    }
+
+    /* ── Split screen ── */
+    .split {
+      display: flex;
+      flex: 1 1 auto;
+      gap: 0;
+      border: 1px solid #333;
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 14px 16px;
+      gap: 8px;
+      position: relative;
+    }
+
+    .panel-left  { background: #252526; }
+    .panel-right { background: #1a1a1a; }
+
+    .divider {
+      width: 3px;
+      background: #007acc;
+      flex: 0 0 3px;
+      position: relative;
+    }
+    .divider::after {
+      content: "VS";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #007acc;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .panel-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .panel-left  .panel-label { color: #4ec94e; }
+    .panel-right .panel-label { color: #f44747; }
+
+    /* chat bubbles */
+    .bubble {
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      max-width: 88%;
+    }
+    .bubble.user {
+      background: #007acc;
+      color: #fff;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+    .bubble.ai {
+      background: #2d2d2d;
+      color: #ccc;
+      border: 1px solid #3c3c3c;
+    }
+    .bubble.ai strong { color: #9cdcfe; }
+
+    /* empty state */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      opacity: 0.45;
+    }
+    .x-icon {
+      font-size: 52px;
+      color: #f44747;
+      line-height: 1;
+      font-weight: 900;
+    }
+    .empty-state p {
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ── Callout boxes ── */
+    .callouts {
+      display: flex;
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+
+    .callout {
+      flex: 1;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      border-top: 3px solid #555;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .callout.copilot { border-top-color: #007acc; }
+    .callout.chronicle { border-top-color: #e8a838; }
+    .callout.custom { border-top-color: #9b59b6; }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .callout-header .icon {
+      font-size: 16px;
+    }
+    .callout ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .callout ul li {
+      font-size: 11.5px;
+      color: #a0a0a0;
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.4;
+    }
+    .callout ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #555;
+    }
+
+    /* ── Bottom statement ── */
+    .bottom {
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(90deg, transparent, rgba(0,122,204,0.18), transparent);
+      border-top: 1px solid #333;
+      padding-top: 14px;
+      letter-spacing: 0.01em;
+    }
+    .bottom span { color: #007acc; }
+  </style>
+</head>
+<body>
+
+  <!-- Title -->
+  <div class="title">Every AI Session Starts From <span>Zero</span></div>
+
+  <!-- Split screen -->
+  <div class="split">
+
+    <!-- Left: Today -->
+    <div class="panel panel-left">
+      <div class="panel-label">&#10003; Today</div>
+      <div class="bubble user">What did we decide for the auth refactor?</div>
+      <div class="bubble ai"><strong>Based on your project context:</strong><br>PR #142 uses JWT. Tests are pending. You chose FastAPI for the backend.</div>
+      <div class="bubble user">What should I work on next?</div>
+      <div class="bubble ai"><strong>Phase 7 priorities:</strong><br>Validate MCP flow end-to-end, check briefing quality, resolve memory inconsistencies.</div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Right: Tomorrow -->
+    <div class="panel panel-right">
+      <div class="panel-label">&#10007; Tomorrow</div>
+      <div class="empty-state">
+        <div class="x-icon">&#10007;</div>
+        <p>New session.<br>No memory.<br>Start from scratch — again.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Callout boxes -->
+  <div class="callouts">
+
+    <div class="callout copilot">
+      <div class="callout-header">
+        <span class="icon">&#128336;</span>
+        Copilot Memory
+      </div>
+      <ul>
+        <li>Expires in 28 days</li>
+        <li>Requires IT approval</li>
+        <li>Sends code to Microsoft</li>
+      </ul>
+    </div>
+
+    <div class="callout chronicle">
+      <div class="callout-header">
+        <span class="icon">&#9888;</span>
+        Chronicle
+      </div>
+      <ul>
+        <li>CLI only</li>
+        <li>Sends git history to GitHub</li>
+        <li>No VS Code integration</li>
+      </ul>
+    </div>
+
+    <div class="callout custom">
+      <div class="callout-header">
+        <span class="icon">&#128295;</span>
+        Custom solutions
+      </div>
+      <ul>
+        <li>Manual and personal</li>
+        <li>Not shareable</li>
+        <li>Requires constant maintenance</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Bottom statement -->
+  <div class="bottom">
+    <span>Hours</span> of developer productivity lost every week — across every team, every session
+  </div>
+
+</body>
+</html>
