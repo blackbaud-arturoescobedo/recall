@@ -25,7 +25,7 @@ Every AI coding tool today loses context when the session ends. You re-explain y
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/YOURUSERNAME/recall.git
+git clone https://github.com/blackbaud-arturoescobedo/recall.git
 cd recall
 ```
 
